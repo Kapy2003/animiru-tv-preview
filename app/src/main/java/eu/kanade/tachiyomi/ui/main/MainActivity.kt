@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -202,7 +203,7 @@ class MainActivity : BaseActivity() {
                         ComposeColor.Transparent
                     },
                     darkIcons = !isSystemInDarkTheme,
-                    navigationBarContrastEnforced = false,
+                    navigationBarContrastEnforced = true,
                     transformColorForLightContent = { ComposeColor.Black },
                 )
             }
@@ -329,6 +330,47 @@ class MainActivity : BaseActivity() {
                 screen.onProvideAssistUrl()?.let { outContent.webUri = it.toUri() }
             }
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        val response = CommonActivity.dispatchKeyEvent(this, event)
+        if (response != null) {
+            return response
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        CommonActivity.onKeyDown(this, keyCode, event)
+
+        return super.onKeyDown(keyCode, event)
+    }
+
+    abstract class CommonActivity : Activity() {
+
+        companion object {
+            fun dispatchKeyEvent(activity: Activity, event: KeyEvent?): Boolean {
+                // Your implementation for dispatchKeyEvent
+                // Example:
+                if (event?.keyCode == KeyEvent.KEYCODE_BACK or KeyEvent.KEYCODE_DPAD_DOWN or KeyEvent.KEYCODE_DPAD_LEFT or KeyEvent.KEYCODE_DPAD_UP or KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    // Handle back key press
+                    return true
+                }
+                return false
+            }
+
+            fun onKeyDown(activity: Activity, keyCode: Int, event: KeyEvent?): Boolean {
+                // Your implementation for onKeyDown
+                // Example:
+                if (keyCode == KeyEvent.KEYCODE_MENU) {
+                    // Handle menu key press
+                    return true
+                }
+                return false
+            }
+        }
+
+        // Other methods and properties of CommonActivity...
     }
 
     @Composable
