@@ -340,7 +340,7 @@ class MainActivity : BaseActivity() {
         return super.dispatchKeyEvent(event)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDo(keyCode: Int, event: KeyEvent?): Boolean {
         CommonActivity.onKeyDown(this, keyCode, event)
 
         return super.onKeyDown(keyCode, event)
